@@ -2,8 +2,12 @@
 - name: Install Apache and Octobercms
   hosts: all
   become: yes
-  
-- git:
+  tasks:
+ - name: install epel-release
+   yum: name=epel-release state=latest
+ - name: install git
+   yum: name=git state=latest
+ - git:
     repo:git@github.com:AntonZv93/octoberdev93.git
     dest:/var/www/
     clone: yes
@@ -11,8 +15,6 @@
 
   
   tasks:
-  - name: Update
-    yum: name=epel-release state=latest
   - name: Install Apache WebServer
     yum: name=httpd state=latest
   - name: Install php56u-pdo
