@@ -21,7 +21,7 @@
     yum: name=php56u.x86_64 state=latest
   - name: Install php56u
     yum: name=php56u-pdo.x86_64 state=latest
-  -name: Install php56u-common
+  - name: Install php56u-common
     yum: name=php56u-common.x86_64 state=latest
   - name: Install php56u-mbstring
     yum: name=php56u-mbstring.x86_64 state=latest
@@ -38,3 +38,4 @@
   - name: Start Dbservers
     service: name=mariadb state=started enabled=yes
     
+
