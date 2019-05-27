@@ -9,9 +9,9 @@
  - php
  - php-cli
  - php-mysql
- -php-zip
+ - php-zip
  - php-json 
- -php-gd
+ - php-gd
  - php-mbstring
  - php-curl 
  - php-xml
@@ -22,9 +22,9 @@
  - apache2 
  - libapache2-mod-php
  - unzip
- -nano
+ - nano
  - mysql-server
- -mysql-client 
+ - mysql-client 
 
 
 - name: Clone git repository
@@ -45,10 +45,12 @@ destin_file: /var/www/html/
 tasks: Copy pages to server:
 - name: Copy to Mywebserver
   copy:  src={{ source_file }}    dest={{ destin_file }}
-  mode=0755
-  remote_src=yes 
-  directory_mode=yes
-  recursive=yes
+  remote_src:yes
+  directory_mode:yes
+  recursive:yes
+  owner:root
+  group:root
+  mode:0755
    notify: Restart Apache
 
 
