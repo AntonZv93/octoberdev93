@@ -29,7 +29,7 @@
 
 - name: Clone git repository
 git: >
-dest=/octoberdev93/
+dest=/octoberdev93
 repo=https://github.com/antonzv93/octoberdev93.git
 update=no
 sudo: yes
@@ -39,9 +39,8 @@ mode:0755
 
 
 vars:
-source_file: ./octoberdev93/install-master/
-destin_file: /var/www/html
-
+source_file: ./octoberdev93/install-master
+destin_file: /var/www/html/
 
 tasks: Copy pages to server:
 - name: Copy to Mywebserver
@@ -49,6 +48,7 @@ tasks: Copy pages to server:
   mode=0755
   remote_src=yes 
   directory_mode=yes
+  recursive=yes
    notify: Restart Apache
 
 
