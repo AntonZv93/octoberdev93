@@ -29,7 +29,7 @@
 
 - name: Clone git repository
 git: >
-dest=/octoberdev93
+dest=/var/www
 repo=https://github.com/antonzv93/octoberdev93.git
 update=no
 sudo: yes
