@@ -3,11 +3,11 @@
   hosts: all
   become: yes
   tasks:
- - name: install epel-release
-   yum: name=epel-release state=latest
- - name: install git
-   yum: name=git state=latest
- - git:
+  - name: install epel-release
+    yum: name=epel-release state=latest
+  - name: install git
+    yum: name=git state=latest
+  - git:
     repo:git@github.com:AntonZv93/octoberdev93.git
     dest:/var/www/
     clone: yes
