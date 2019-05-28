@@ -1,4 +1,3 @@
-    
 ---
 - name: Create vm
   hosts: localhost
@@ -63,3 +62,21 @@
         type: 'A'
         value: "{{ item.public_ip }}"
       with_items: "{{ gce.instance_data }}"
+
+- name: Deploy Nginx and other
+  hosts: new_instances
+  become: yes
+  become_method: sudo
+  roles:
+    - nginx
+    - php-fpm
+    - mysql
+    - october
+
+#- name: Manage new instances
+#  hosts: new_instances
+#  connection: ssh
+#  sudo: True
+#  roles:
+#    - base_configuration
+#    - production_server

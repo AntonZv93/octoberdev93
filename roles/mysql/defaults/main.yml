@@ -1,0 +1,4 @@
+---
+# defaults file for mysql
+oct_mysql_db: octoberdev93
+oct_mysql_user: octoberdev93

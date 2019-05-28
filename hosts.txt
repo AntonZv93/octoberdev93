@@ -1,2 +1,0 @@
-[octoberinstance-1]
-ip_gcp_instance

@@ -1,0 +1,32 @@
+---
+# tasks file for october
+# tasks file for october
+- name: Creates directory
+  file: path=/var/www/{{ domain }} state=directory
+
+
+- name: Download octoberdev93
+  git:
+    repo: https://github.com/antonzv93/octoberdev93.git
+    dest=/var/www/html
+    validate_certs=no
+    version: master
+    become: yes
+    mode: 0755
+  sudo: yes
+
+
+
+- name: Update octoberdev93 config file
+  lineinfile:
+    dest=/var/www/html{{ domain }}/octoberdev93/install.php
+    regexp="{{ item.regexp }}"
+    line="{{ item.line }}"
+  with_items:
+    - {'regexp': "define\\('DB_NAME', '(.)+'\\);", 'line': "define('DB_NAME', '{{oct_mysql_db}}');"}
+    - {'regexp': "define\\('DB_USER', '(.)+'\\);", 'line': "define('DB_USER', '{{oct_mysql_user}}');"}
+    - {'regexp': "define\\('DB_PASSWORD', '(.)+'\\);", 'line': "define('DB_PASSWORD', '{{lookup('password', 'passwordfile')}}');"}
+  sudo: yes
+
+  notify:
+    - restart nginx

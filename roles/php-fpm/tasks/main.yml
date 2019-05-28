@@ -1,0 +1,27 @@
+---
+# tasks file for php-fpm
+- name: Update apt cache
+  apt: update_cache=yes cache_valid_time=3600
+  sudo: yes
+
+- name: Install required software
+  apt: name={{ item }} state=present
+  sudo: yes
+  with_items:
+    - php
+    - php-cli
+    - php-mysql
+    - php-zip
+    - php-json 
+    - php-gd 
+    - php-mbstring    
+    - php-curl
+    - php-xml
+    - php-pear
+    - php-bcmath
+    - php-pdo
+    - php-mcrypt
+    - php-fpm
+    - php-mysqlnd
+    - openssl
+    

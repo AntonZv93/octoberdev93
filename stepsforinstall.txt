@@ -1,0 +1,99 @@
+станавливаем Ansible, если версия ниже 2.2 обновляем:
+
+добавляем в /etc/apt/sources.list репозиторий 
+deb http://ppa.launchpad.net/ansible/ansible/ubuntu xenial main
+Добавляем ключ:
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
+и устанавливаем: 
+sudo apt-get update 
+sudo apt-get install ansible
+Вносим изменения в конфигурационный файл /etc/ansible/ansible.cfg:
+Раскомментируем  строку host_key_checking = False . Это необходимо для того, что бы при удалении и повторном создании виртуальной машины игнорировать ошибку изменения ключа.
+также активируем строку nocows = 1, этот параметр необязателен, если вам нравится изображение веселой коровы, то игнорируем его.
+
+Переходим к созданию проекта. 
+Для чего переходим по адресу - https://console.cloud.google.com/projectselector/compute/instances.
+ Я назвал проект octoberdev93, т.к. в будущем именно october будет развернут в виртуальной машине.
+После создания, нам понадобится идентификатор проекта
+Переходим по ссылке htps://console.cloud.google.com/iam-admin/serviceaccounts/ 
+--- выбираем аккаунт, либо создаем новый для нашего проекта и сохраняем ключ (тип JSON) 
+Последнее что нам необходимо - это сгенерировать SSH ключ:
+ssh-keygen -t rsa -f ~/.ssh/[KEY_FILE_NAME] -C [USERNAME] , где для [KEY_FILE_NAME] и [USERNAME] указываем свои значения.
+После чего загружаем наш новый публичный ключ по адресу https://console.cloud.google.com/compute/metadata/sshKeys
+
+На этом этапе завершаем работу с Google Cloud и переходим к Ansible
+
+Устанавливаем необходимые зависимости:
+sudo apt-get install -y build-essential git python-dev python-pip
+Устанавливаем libcloud:
+sudo pip install apache-libcloud==0.20.1
+Описание модуля можно посмотреть здесь - http://docs.ansible.com/ansible/list_of_cloud_modules.html#google
+Переходим к настройке ansible playbook: 
+Я создал директорию /etc/ansible/gce куда поместил JSON ключ проекта
+Все последующие файлы будут находится в этой директории. Создаем файл /etc/ansible/gce/var
+ в котором прописываем необходимые переменные  :
+service_account_email:
+credentials_file: /etc/ansible/gce/
+project_id: 
+machine_type: f1-micro
+image: debian-8
+Cоздаем файл playbook /etc/ansible/gce/create.yml
+Для запуска это сценария выполняем команду:
+ansible-playbook create.yml --extra-vars "domain=yourdns" --user= --private-key=~/.ssh/user
+С помощью этого playbook создаем новую виртуальную машину, правила разрешающие доступ к портам 80,443 и Cloud DNS с A-записью,
+ в переменной domain передаем нашему сценарию домен который будет создан.
+ Ниже привожу сценарий для удаления созданной нами машины
+/etc/ansible/gce/destroy.yml
+
+
+
+Часть 2:
+Взаимодействие с google cloud я описал в первой части статьи, в этой части рассмотрю работу c ansible,
+ в качестве примера развернем LEMP (Linux, Nginx, MySQL, PHP) и установим October
+ Перейдем в директорию с нашими сценариями и в сценарий create.yml добавим следующую конструкцию:
+- name: Deploy Nginx and other
+  hosts: new_instances
+  become: yes
+  become_method: sudo
+  roles:
+   - nginx
+   - php-fpm
+   - mysql
+   - octoberdev93
+Здесь я добавил роли (задачи) которые и будут отвечать за установку и настройку приложений.
+Пойдем по порядку:
+Nginx
+Создадим структуру директорий и файлов для роли Nginx с помощью утилиты ansible-galaxy:
+ansible-galaxy init nginx
+Собственно, в данный момент, нам необходимы только три директории -  handlers, tasks и templates. И так для начала создадим обработчик. Для чего в nginx/handlers/main.yml (все обработчики для текущей задачи описываются здесь) добавим:
+- name: restart nginx
+ service: name=nginx state=restarted enabled=yes
+ sudo: yes
+Пример использования будет ниже.
+Переходим в nginx/templates/ и создаем файл default содержимое находится по этому пути.
+Это и будет конфигурационный файл для нашего сайта. И последний этап - это создание самой задачи - nginx/tasks/main.yml
+PHP-FPM
+Выполняем комманду
+ansible-galaxy init php-fpm
+создаем файл
+roles/php-fpm/tasks/main.yml
+Я использовал настройки php по умолчанию, поэтому в правилах ограничился только установкой пакетов
+  MySQL
+ansible-galaxy init mysql
+Здесь мы используем новый файл roles/mysql/defaults/main.yml ,
+в нем содержатся переменные и их значения используемые в роли.
+Это имя БД и пользователя для octobercms
+Устанавливаем Mysql, создаем базу и пользователя, 
+используя переменные определенные в defaults.
+ Немного задержу ваше внимание на создании пароля для пользователя, 
+ используется команда lookup, если в нашей директории отсутствует  файл passwordfile со значением пароля,
+ он будет сгенерирован, что собственно, нам и надо.
+ И последний этап - создание задачи octobercms
+ roles/octoberdev93Здесь мы скачиваем репозиторий octoberdev93,копируем его в нашу,
+ только, что созданную директорию 
+прописываем данные нашего подключения к базе используемые в правиле mysql. И в заключении - рестартуем nginx. 
+
+
+Теперь можно создать нашу виртуальную машину перейдя по пути http://your_ip/install.php и следовать инструкциям
+
+
