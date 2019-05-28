@@ -1,67 +1,181 @@
-<p align="center">
-    <img src="https://github.com/octobercms/october/blob/master/themes/demo/assets/images/october.png?raw=true" alt="October" width="25%" height="25%" />
-</p>
+Устанавливаем Ansible, если версия ниже 2.2 обновляем:
 
-[October](http://octobercms.com) is a Content Management System (CMS) and web platform whose sole purpose is to make your development workflow simple again. It was born out of frustration with existing systems. We feel building websites has become a convoluted and confusing process that leaves developers unsatisfied. We want to turn you around to the simpler side and get back to basics.
+добавляем в /etc/apt/sources.list репозиторий 
+deb http://ppa.launchpad.net/ansible/ansible/ubuntu xenial main
+Добавляем ключ:
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
+и устанавливаем: 
+sudo apt-get update
+sudo apt-get install python-yaml python-jinja2 python-paramiko python-crypto 
+sudo apt-get install ansible
+Вносим изменения в конфигурационный файл /etc/ansible/ansible.cfg:
+Раскомментируем  строку host_key_checking = False . Это необходимо для того, 
+что бы при удалении и повторном создании виртуальной машины игнорировать ошибку изменения ключа.
+также активируем строку nocows = 1, этот параметр необязателен, если вам нравится изображение веселой коровы, то игнорируем его.
 
-October's mission is to show the world that web development is not rocket science.
+Переходим к созданию проекта. 
+Для чего переходим по адресу - https://console.cloud.google.com/projectselector/compute/instances.
 
-[![Build Status](https://travis-ci.org/octobercms/october.svg?branch=develop)](https://travis-ci.org/octobercms/october)
-[![License](https://poser.pugx.org/october/october/license.svg)](https://packagist.org/packages/october/october)
+Я назвал проект octobercms, т.к. в будущем именно octobercms будет развернут в виртуальной машине.
+После создания, нам понадобится идентификатор проекта
 
-### Learning October
+Переходим по ссылке htps://console.cloud.google.com/iam-admin/serviceaccounts/  
+выбираем аккаунт, либо создаем новый для нашего проекта и сохраняем ключ (тип JSON) 
 
-The best place to learn October is by [reading the documentation](https://octobercms.com/docs) or [following some tutorials](https://octobercms.com/support/articles/tutorials).
+Последнее что нам необходимо - это сгенерировать SSH ключ:
+ssh-keygen -t rsa -f ~/.ssh/[KEY_FILE_NAME] -C [USERNAME] , где для [KEY_FILE_NAME] и [USERNAME] указываем свои значения.
+После чего загружаем наш новый публичный ключ по адресу https://console.cloud.google.com/compute/metadata/sshKeys
 
-You may also watch these introductory videos for [beginners](https://vimeo.com/79963873) and [advanced users](https://vimeo.com/172202661).
+На этом этапе завершаем работу с Google Cloud и переходим к Ansible
 
-### Installing October
+Устанавливаем необходимые зависимости:
+sudo apt-get install -y build-essential git python-dev python-pip
+Устанавливаем libcloud:
+sudo pip install apache-libcloud==0.20.1
+Описание модуля можно посмотреть здесь - http://docs.ansible.com/ansible/list_of_cloud_modules.html#google
+Переходим к настройке ansible playbook: 
+Я создал директорию /etc/ansible/gce куда поместил JSON ключ проекта
+Все последующие файлы будут находится в этой директории. Создаем файл /etc/ansible/gce/var
+ в котором прописываем необходимые переменные  :
+---
+service_account_email: *-compute@developer.gserviceaccount.com
+credentials_file: /etc/ansible/gce/WordPress-1396309b57b.json
+project_id: wordpress-16508
+machine_type: f1-micro
+image: debian-8
 
-Instructions on how to install October can be found at the [installation guide](https://octobercms.com/docs/setup/installation).
+Cоздаем файл playbook /etc/ansible/gce/create.yml
 
-### Quick start installation
+---
+- name: Create vm
+ hosts: localhost
+ connection: local
+ gather_facts: no
 
-For advanced users, run this in your terminal to install October from command line:
+ vars_files:
+   - var
 
-```shell
-php -r "eval('?>'.file_get_contents('https://octobercms.com/api/installer'));"
-```
+ tasks:
+   - name: Launch instances
+     gce:
+#заменяем точки на тире (точки не используются в имени машины
+         instance_names: '{{ domain | regex_replace("(\.)","-") }}'
+         machine_type: "{{ machine_type }}"
+         image: "{{ image }}"
+         service_account_email: "{{ service_account_email }}"
+         credentials_file: "{{ credentials_file }}"
+         project_id: "{{ project_id }}"
+         tags: webserver
+     register: gce
 
-If you plan on using a database, run this command:
+   - name: Wait for SSH to come up
+     wait_for: host={{ item.public_ip }} port=22 delay=1 timeout=30 state=started
+     with_items: "{{ gce.instance_data }}"
 
-```shell
-php artisan october:install
-```
+   - name: Add host to groupname
+     add_host: hostname={{ item.public_ip }} groupname=new_instances
+     with_items: "{{ gce.instance_data }}"
 
-### Development Team
+   - name: Allow HTTP traffic
+     gce_net:
+       fwname: pass-http
+       name: default
+       allowed: tcp:80
+       project_id: "{{ project_id }}"
+       credentials_file: "{{ credentials_file }}"
+       service_account_email: "{{ service_account_email }}"
 
-October was created by [Alexey Bobkov](http://ca.linkedin.com/pub/aleksey-bobkov/2b/ba0/232) and [Samuel Georges](https://www.linkedin.com/in/samuel-georges-0a964131/), who (along with [Luke Towers](https://luketowers.ca/)) continue to develop the platform.
+   - name: Allow HTTPS traffic
+     gce_net:
+       fwname: pass-https
+       name: default
+       allowed: tcp:443
+       project_id: "{{ project_id }}"
+       credentials_file: "{{ credentials_file }}"
+       service_account_email: "{{ service_account_email }}"
 
-### Foundation library
+   - name: Create zone
+     gcdns_zone:
+       project_id: "{{ project_id }}"
+       credentials_file: "{{ credentials_file }}"
+       service_account_email: "{{ service_account_email }}"
+       zone: "{{ domain }}"
 
-The CMS uses [Laravel](https://laravel.com) as a foundation PHP framework.
+   - name: Create record
+     gcdns_record:
+       project_id: "{{ project_id }}"
+       credentials_file: "{{ credentials_file }}"
+       service_account_email: "{{ service_account_email }}"
+       record: "{{ domain }}"
+       zone: "{{ domain }}"
+       type: 'A'
+       value: "{{ item.public_ip }}"
+     with_items: "{{ gce.instance_data }}"
+ 
 
-### Contact
+Для запуска это сценария выполняем команду:
+ansible-playbook create.yml --extra-vars "domain=your_dns" --user=your_name --private-key=~/.ssh/your_name
 
-You can communicate with us using the following mediums:
+С помощью этого playbook создаем новую виртуальную машину, правила разрешающие доступ к портам 80,443 и Cloud DNS с A-записью, в переменной domain передаем нашему сценарию домен который будет создан.
 
-* [Follow us on Twitter](https://twitter.com/octobercms) for announcements and updates.
-* [Follow us on Facebook](https://facebook.com/octobercms) for announcements and updates.
-* [Join us on IRC](https://octobercms.com/chat) to chat with us.
-* [Join us on Slack](https://octobercms-slack.herokuapp.com/) to chat with us.
+Ниже привожу сценарий для удаления созданной нами машины
+/etc/ansible/gce/destroy.yml
+---
+- name: Destroy
+ hosts: localhost
+ connection: local
+ gather_facts: no
 
-### License
+ vars_files:
+   - var
 
-The OctoberCMS platform is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+ tasks:
+   - name: gce
+     gce:
+         instance_names: '{{ domain | regex_replace("(\.)","-") }}'
+         machine_type: "{{ machine_type }}"
+         image: "{{ image }}"
+         service_account_email: "{{ service_account_email }}"
+         credentials_file: "{{ credentials_file }}"
+         project_id: "{{ project_id }}"
+         tags: webserver
+     register: gce
 
-### Contributing
+   - name: remove record
+     gcdns_record:
+       project_id: "{{ project_id }}"
+       credentials_file: "{{ credentials_file }}"
+       service_account_email: "{{ service_account_email }}"
+       record: "{{ domain }}"
+       zone: "{{ domain }}"
+       state: 'absent'
+       type: 'A'
+       value: "{{ item.public_ip }}"
+     with_items: "{{ gce.instance_data }}"
 
-Before sending a Pull Request, be sure to review the [Contributing Guidelines](.github/CONTRIBUTING.md) first.
+   - name: remove zone
+     gcdns_zone:
+       project_id: "{{ project_id }}"
+       credentials_file: "{{ credentials_file }}"
+       service_account_email: "{{ service_account_email }}"
+       zone: "{{ domain }}"
+       state: 'absent'
 
-### Coding standards
-
-Please follow the following guides and code standards:
-
-* [PSR 4 Coding Standards](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md)
-* [PSR 2 Coding Style Guide](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)
-* [PSR 1 Coding Standards](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md)
+   - name: Destroy
+     gce:
+         instance_names: '{{ domain | regex_replace("(\.)","-") }}'
+         machine_type: "{{ machine_type }}"
+         image: "{{ image }}"
+         service_account_email: "{{ service_account_email }}"
+         credentials_file: "{{ credentials_file }}"
+         project_id: "{{ project_id }}"
+         tags: webserver
+         state: absent
+		 
+		 
+		 
+		 В файле thisistrueoctoberplaybookforcentos.yml содержится набор команд для автоматического обновления системы и установки необходимых комманд 
+		 для того чтобы можно было создать octobercms на всех instances в вашей облачной платформе
+		 запуск ad-hoc комманды :ansible-playbook thisistrueoctoberplaybookforcentos.yml
+		 переход по вашему ip instances с добавлением /install.php и указываем порт через двоеточие и следуем инструкциям по установке
+		 
