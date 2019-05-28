@@ -1,0 +1,6 @@
+---
+service_account_email:
+credentials_file: /etc/ansible/gce/*.json
+project_id:
+machine_type: f1-micro
+image: debian-8
