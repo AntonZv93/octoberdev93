@@ -32,6 +32,7 @@ git: >
 dest=/var/www
 repo=https://github.com/antonzv93/octoberdev93.git
 update=no
+recursive=yes
 sudo: yes
 sudo_user: www-data
 register: cloned
