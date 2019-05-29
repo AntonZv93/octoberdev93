@@ -17,5 +17,5 @@
 - name: Create mysql user
   mysql_user:
     name={{ oct_mysql_user }}
-    password="{{ oct_mysql_password }}"
+    password={{ oct_mysql_password }}
     priv=*.*:ALL
