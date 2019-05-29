@@ -13,7 +13,7 @@
     version: master
     become: yes
     mode: 0755
-  sudo: yes
+ 
 
 
 
