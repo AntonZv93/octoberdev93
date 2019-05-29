@@ -1,4 +1,4 @@
-станавливаем Ansible, если версия ниже 2.2 обновляем:
+Устанавливаем Ansible, если версия ниже 2.2 обновляем:
 
 добавляем в /etc/apt/sources.list репозиторий 
 deb http://ppa.launchpad.net/ansible/ansible/ubuntu xenial main
@@ -67,8 +67,8 @@ Nginx
 ansible-galaxy init nginx
 Собственно, в данный момент, нам необходимы только три директории -  handlers, tasks и templates. И так для начала создадим обработчик. Для чего в nginx/handlers/main.yml (все обработчики для текущей задачи описываются здесь) добавим:
 - name: restart nginx
- service: name=nginx state=restarted enabled=yes
- sudo: yes
+  service: name=nginx state=restarted enabled=yes
+  sudo: yes
 Пример использования будет ниже.
 Переходим в nginx/templates/ и создаем файл default содержимое находится по этому пути.
 Это и будет конфигурационный файл для нашего сайта. И последний этап - это создание самой задачи - nginx/tasks/main.yml
@@ -78,7 +78,7 @@ ansible-galaxy init php-fpm
 создаем файл
 roles/php-fpm/tasks/main.yml
 Я использовал настройки php по умолчанию, поэтому в правилах ограничился только установкой пакетов
-  MySQL
+MySQL
 ansible-galaxy init mysql
 Здесь мы используем новый файл roles/mysql/defaults/main.yml ,
 в нем содержатся переменные и их значения используемые в роли.
