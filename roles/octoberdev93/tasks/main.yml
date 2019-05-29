@@ -17,11 +17,7 @@
 
 
 
-- name: Update octoberdev93 config file
-  lineinfile:
-    dest=/var/www/html{{ domain }}/octoberdev93/install.php
-    regexp="{{ item.regexp }}"
-    line="{{ item.line }}"
+
   
 
   notify:
