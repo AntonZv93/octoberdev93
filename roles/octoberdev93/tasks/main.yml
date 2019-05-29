@@ -3,7 +3,7 @@
 # tasks file for october
 - name: Creates directory
   file: path=/var/www/{{ domain }} state=directory
-
+  sudo: yes
 
 - name: Download octoberdev93
   git:
