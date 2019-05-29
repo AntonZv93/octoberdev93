@@ -1,5 +1,5 @@
 ---
-service_account_email: *-compute@developer.gserviceaccount.com
+service_account_email: *-compute@developer.google-serviceaccount.com
 credentials_file: /etc/ansible/gce/*.json
 project_id: your_number
 machine_type: f1-micro
