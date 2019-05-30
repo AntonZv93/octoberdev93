@@ -20,7 +20,7 @@ sudo apt-get install ansible
 Последнее что нам необходимо - это сгенерировать SSH ключ:
 ssh-keygen -t rsa -f ~/.ssh/[KEY_FILE_NAME] -C [USERNAME] , где для [KEY_FILE_NAME] и [USERNAME] указываем свои значения.
 После чего загружаем наш новый публичный ключ по адресу https://console.cloud.google.com/compute/metadata/sshKeys
-
+Должны быть прописанны настройки инвентори (hosts) :hosts.txt ,а также ansible.cfg где лежит путь до файла инвентори и путь до .ssh директории
 На этом этапе завершаем работу с Google Cloud и переходим к Ansible
 
 Устанавливаем необходимые зависимости:
