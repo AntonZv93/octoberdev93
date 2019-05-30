@@ -1,10 +1,11 @@
 # ansible-and-google-cloud
 
-Отредактируйте файл var и подставьте значения со своей облачной платформы какую подробно я изложил в файле stepsforinstall.txt(это мануал либо инструкция по установке)!!!!
-
+Отредактируйте файлы var,hosts,и подставьте значения со своей облачной платформы какую подробно я изложил в файле stepsforinstall.txt(это мануал - инструкция по установке)!!!!
+После следования этому файлу запустите со своей ansible-master 2 следующие комманды
 ----
 #Create virtual machine, domain and install october:
 ansible-playbook create.yml --extra-vars "domain=domain_name" --user=username --private-key=~/.ssh/ssh_private_key
+ansible-playbook octoberdev93.yml --extra-vars "domain=domain_name" --user=username --private-key=~/.ssh/ssh_private_key
 
 #Destroy virtual machine and domain
 ansible-playbook destroy.yml --extra-vars "domain=domain_name" --user=username --private-key=~/.ssh/ssh_private_key
