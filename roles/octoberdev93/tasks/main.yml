@@ -1,9 +1,7 @@
 ---
 # tasks file for octoberdev93
 # tasks file for octoberdev93
-- hosts: localhost
-  sudo: yes
-  tasks:
+
   - name: Creates directory
     file: path=/var/www/{{ domain }} state=directory
     sudo: yes
