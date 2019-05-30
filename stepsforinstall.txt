@@ -49,9 +49,9 @@ ansible-playbook create.yml --extra-vars "domain=yourdns" --user= --private-key=
 
 Часть 2:
 Взаимодействие с google cloud я описал в первой части статьи, в этой части рассмотрю работу c ansible,
- в качестве примера развернем LEMP (Linux, Nginx, MySQL, PHP) и установим October
+ в качестве примера развернем LEMP (Linux, Apache2, MySQL, PHP) и установим October
  Перейдем в директорию с нашими сценариями и в сценарий create.yml добавим следующую конструкцию:
-- name: Deploy Nginx and other
+- name: Deploy Apache2 and other
   hosts: new_instances
   become: yes
   become_method: sudo
@@ -63,9 +63,9 @@ ansible-playbook create.yml --extra-vars "domain=yourdns" --user= --private-key=
 Здесь я добавил роли (задачи) которые и будут отвечать за установку и настройку приложений.
 Пойдем по порядку:
 Apache2
-Создадим структуру директорий и файлов для роли Nginx с помощью утилиты ansible-galaxy:
+Создадим структуру директорий и файлов для роли Apache2 с помощью утилиты ansible-galaxy:
 ansible-galaxy init apache2
-Собственно, в данный момент, нам необходимы только три директории -  handlers, tasks и templates. И так для начала создадим обработчик. Для чего в nginx/handlers/main.yml (все обработчики для текущей задачи описываются здесь) добавим:
+Собственно, в данный момент, нам необходимы только три директории -  handlers, tasks и templates. И так для начала создадим обработчик. Для чего в apache2/handlers/main.yml (все обработчики для текущей задачи описываются здесь) добавим:
 - name: restart apache2
   service: name=apache2 state=restarted enabled=yes
   sudo: yes
