@@ -56,22 +56,22 @@ ansible-playbook create.yml --extra-vars "domain=yourdns" --user= --private-key=
   become: yes
   become_method: sudo
   roles:
-   - nginx
+   - apache2
    - php-fpm
    - mysql
    - octoberdev93
 Здесь я добавил роли (задачи) которые и будут отвечать за установку и настройку приложений.
 Пойдем по порядку:
-Nginx
+Apache2
 Создадим структуру директорий и файлов для роли Nginx с помощью утилиты ansible-galaxy:
-ansible-galaxy init nginx
+ansible-galaxy init apache2
 Собственно, в данный момент, нам необходимы только три директории -  handlers, tasks и templates. И так для начала создадим обработчик. Для чего в nginx/handlers/main.yml (все обработчики для текущей задачи описываются здесь) добавим:
-- name: restart nginx
-  service: name=nginx state=restarted enabled=yes
+- name: restart apache2
+  service: name=apache2 state=restarted enabled=yes
   sudo: yes
 Пример использования будет ниже.
-Переходим в nginx/templates/ и создаем файл default содержимое находится по этому пути.
-Это и будет конфигурационный файл для нашего сайта. И последний этап - это создание самой задачи - nginx/tasks/main.yml
+Переходим в apache2/templates/ и создаем файл default содержимое находится по этому пути.
+Это и будет конфигурационный файл для нашего сайта. И последний этап - это создание самой задачи - apache2/tasks/main.yml
 PHP-FPM
 Выполняем комманду
 ansible-galaxy init php-fpm
@@ -90,9 +90,9 @@ ansible-galaxy init mysql
  он будет сгенерирован, что собственно, нам и надо.
  И последний этап - создание задачи octobercms
  roles/octoberdev93Здесь мы скачиваем репозиторий octoberdev93,копируем его в нашу,
- только, что созданную директорию . И в заключении - рестартуем nginx. 
+ только, что созданную директорию . И в заключении - рестартуем apache2. 
 
 
-Теперь можно создать нашу виртуальную машину перейдя по пути http://your_ip/install.php и следовать инструкциям
+Теперь можно запустить мастер установки перейдя по пути http://your_ip/install.php и следовать инструкциям
 
 
