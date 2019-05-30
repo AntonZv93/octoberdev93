@@ -63,14 +63,6 @@
         value: "{{ item.public_ip }}"
       with_items: "{{ gce.instance_data }}"
 
-- name: Deploy Nginx and other
-  hosts: new_instances
-  become: yes
-  become_method: sudo
-  roles:
-    - apache2
-    - php-fpm
-    - mysql
 
 #- name: Manage new instances
 #  hosts: new_instances
