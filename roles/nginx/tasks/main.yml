@@ -8,11 +8,10 @@
   apt: name={{ item }} state=present
   sudo: yes
   with_items:
-    - nginx
+    - apache2
     - python-mysqldb
 
-- name: Replace nginx default conf
-  template: src=default dest=/etc/nginx/sites-available/default
+- name: Restart apache2 
   notify:
-    - restart nginx
+    - restart apache2
 
