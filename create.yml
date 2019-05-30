@@ -71,7 +71,6 @@
     - apache2
     - php-fpm
     - mysql
-    - octoberdev93
 
 #- name: Manage new instances
 #  hosts: new_instances
