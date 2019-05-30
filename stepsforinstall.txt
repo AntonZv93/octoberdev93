@@ -42,48 +42,19 @@ Cоздаем файл playbook /etc/ansible/gce/create.yml
 ansible-playbook create.yml --extra-vars "domain=yourdns" --user= --private-key=~/.ssh/user
 С помощью этого playbook создаем новую виртуальную машину, правила разрешающие доступ к портам 80,443 и Cloud DNS с A-записью,
  в переменной domain передаем нашему сценарию домен который будет создан.
- Ниже привожу сценарий для удаления созданной нами машины
-/etc/ansible/gce/destroy.yml
+ Ниже привожу сценарий для удаления созданной нами машины - 
+ansible-playbook /etc/ansible/gce/destroy.yml
 
 
 
 Часть 2:
 Взаимодействие с google cloud я описал в первой части статьи, в этой части рассмотрю работу c ansible,
- в качестве примера развернем LEMP (Linux, Apache2, MySQL, PHP) и установим October
- Перейдем в директорию с нашими сценариями и в сценарий create.yml добавим следующую конструкцию:
-- name: Deploy Apache2 and other
-  hosts: new_instances
-  become: yes
-  become_method: sudo
-  roles:
-   - apache2
-   - php-fpm
-   - mysql
+ в качестве примера развернем LEMP (Linux, Apache2, MySQL, PHP) и установим October:
+
   
-Здесь я добавил роли (задачи) которые и будут отвечать за установку и настройку приложений.
-Пойдем по порядку:
-Apache2
-Создадим структуру директорий и файлов для роли Apache2 с помощью утилиты ansible-galaxy:
-ansible-galaxy init apache2
-Собственно, в данный момент, нам необходимы только три директории -  handlers, tasks и templates. И так для начала создадим обработчик. Для чего в apache2/handlers/main.yml (все обработчики для текущей задачи описываются здесь) добавим:
-- name: restart apache2
-  service: name=apache2 state=restarted enabled=yes
-  sudo: yes
-Пример использования будет ниже.
-Переходим в apache2/templates/ и создаем файл default содержимое находится по этому пути.
-Это и будет конфигурационный файл для нашего сайта. И последний этап - это создание самой задачи - apache2/tasks/main.yml
-PHP-FPM
-Выполняем комманду
-ansible-galaxy init php-fpm
-создаем файл
-roles/php-fpm/tasks/main.yml
-Я использовал настройки php по умолчанию, поэтому в правилах ограничился только установкой пакетов
-MySQL
-ansible-galaxy init mysql
-Здесь мы используем новый файл roles/mysql/defaults/main.yml ,
-в нем содержатся переменные и их значения используемые в роли.
-Это имя БД и пользователя для octobercms
-Устанавливаем Mysql, создаем базу пользователя и пароль .
+Я добавил роли (задачи) которые выполнятся в файле octoberdev93.yml после клонирования репозитория git 
+
+
 Запускаем playbook который находится в основной папке репозитория с аналогичным названием:octoberdev93.yml
 
 
