@@ -4,12 +4,16 @@
   become: yes
   
 tasks:
+
+- name: Install git
+  apt: name=git state=latest
+
 - name: Creates directory
-    file: path=/var/www/{{ domain }} state=directory
-    sudo: yes
+  file: path=/var/www/{{ domain }} state=directory
+  sudo: yes
 
 - name: Download octoberdev93
-    git:
+  git:
      repo: https:/github.com/antonzv93/octoberdev93.git
      dest=/var/www/html
      validate_certs=no
@@ -23,7 +27,7 @@ tasks:
   become: yes
   become_method: sudo
   roles:
-   - apache2
-   - php-fpm
-   - mysql
+    - apache2
+    - php-fpm
+    - mysql
     
