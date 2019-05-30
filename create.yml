@@ -68,7 +68,7 @@
   become: yes
   become_method: sudo
   roles:
-    - nginx
+    - apache2
     - php-fpm
     - mysql
     - octoberdev93
