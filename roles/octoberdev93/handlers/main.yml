@@ -1,5 +1,5 @@
 ---
-# handlers file for wordpress
-- name: restart nginx
-  service: name=nginx state=restarted enabled=yes
+# handlers file for octoberdev93
+- name: restart apache2
+  service: name=apache2 state=restarted enabled=yes
   sudo: yes
