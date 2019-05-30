@@ -10,6 +10,9 @@
   with_items:
     - apache2
     - python-mysqldb
+    - php-mysql
+    - libapache2-mod-php
+    
 
 - name: Restart apache2 
   notify:
