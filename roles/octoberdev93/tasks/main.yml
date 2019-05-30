@@ -1,24 +1,21 @@
 ---
-# tasks file for october
-# tasks file for october
-- name: Creates directory
-  file: path=/var/www/{{ domain }} state=directory
+# tasks file for octoberdev93
+# tasks file for octoberdev93
+- hosts: localhost
   sudo: yes
+  tasks:
+  - name: Creates directory
+    file: path=/var/www/{{ domain }} state=directory
+    sudo: yes
 
-- name: Download octoberdev93
-  git:
-    repo: https://github.com/antonzv93/octoberdev93.git
-    dest=/var/www/html
-    validate_certs=no
-    version: master
-    become: yes
-    mode: 0755
+  - name: Download octoberdev93
+    git:
+      repo: https://github.com/antonzv93/octoberdev93.git
+      dest=/var/www/html
+      validate_certs=no
+      version: master
+      become: yes
+      mode: 0755
  
-
-
-
-
-  
-
-  notify:
-    - restart nginx
+    notify:
+    - restart apache2
