@@ -16,9 +16,14 @@ tasks:
      version: master
      become: yes
      mode: 0755
-  roles:
-    - apache2
-    - php-fpm
-    - mysql
+  
 
+- name: Deploy Apache2 and other
+  hosts: localhost
+  become: yes
+  become_method: sudo
+  roles:
+   - apache2
+   - php-fpm
+   - mysql
     
