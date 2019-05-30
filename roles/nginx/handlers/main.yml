@@ -1,5 +1,5 @@
 ---
-# handlers file for nginx
-- name: restart nginx
-  service: name=nginx state=restarted enabled=yes
+# handlers file for apache2
+- name: restart apache2
+  service: name=apache2 state=restarted enabled=yes
   sudo: yes
