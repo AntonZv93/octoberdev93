@@ -5,6 +5,7 @@
 ----
 #Create virtual machine, domain and install october:
 ansible-playbook create.yml --extra-vars "domain=domain_name" --user=username --private-key=~/.ssh/ssh_private_key
+#Copy git to your gcp instance and running this playbook:
 ansible-playbook octoberdev93.yml --extra-vars "domain=domain_name" --user=username --private-key=~/.ssh/ssh_private_key
 
 #Destroy virtual machine and domain
