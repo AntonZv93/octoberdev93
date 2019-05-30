@@ -1,7 +1,7 @@
 server {
     listen 80;
-    root /var/www/{{ domain }}/wordpress;
-    index index.php;
+    root /var/www/html{{ domain }}/octoberdev93;
+    index install.php;
     gzip                on;
     gzip_comp_level     9;
     gzip_min_length     512;
@@ -23,7 +23,7 @@ server {
         try_files $uri $uri/ /index.php?$args;
     }
 
-    rewrite /wp-admin$ $scheme://$host$uri/ permanent;
+    rewrite / $scheme://$host$uri/ permanent;
 
     location ~ \.php$ {
         try_files $uri =404;
