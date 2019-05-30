@@ -1,8 +1,11 @@
 ---
 - hosts: localhost
   remote_user: root 
-  become: yes 
-
+  become: yes
+  roles:
+    - apache2
+    - php-fpm
+    - mysql
 tasks:
 - name: Creates directory
     file: path=/var/www/{{ domain }} state=directory
