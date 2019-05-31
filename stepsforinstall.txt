@@ -37,13 +37,14 @@ credentials_file: /etc/ansible/gce/
 project_id: 
 machine_type: f1-micro
 image: debian-8
-Cоздаем файл playbook /etc/ansible/gce/create.yml
+Cоздаем файл playbook /etc/ansible/gce/on_ansible_mastmastee
+С помощью этого скрипта мы копируем гит на хост где находится ansible и оттуда мы можем продолжить перейдя в скопированную папку и выполнив следующую комманду:
 Для запуска это сценария выполняем команду:
-ansible-playbook create.yml --extra-vars "domain=yourdns" --user= --private-key=~/.ssh/user
+ansible-playbook /home/create.yml --extra-vars "domain=yourdns" --user= --private-key=~/.ssh/user
 С помощью этого playbook создаем новую виртуальную машину, правила разрешающие доступ к портам 80,443 и Cloud DNS с A-записью,
  в переменной domain передаем нашему сценарию домен который будет создан.
  Ниже привожу сценарий для удаления созданной нами машины - 
-ansible-playbook /etc/ansible/gce/destroy.yml
+ansible-playbook /home/destroy.yml
 
 
 
@@ -53,9 +54,8 @@ ansible-playbook /etc/ansible/gce/destroy.yml
 
   
 Я добавил роли (задачи) которые выполнятся в файле octoberdev93.yml после клонирования репозитория git 
-
-
-Запускаем playbook который находится в основной папке репозитория с аналогичным названием:octoberdev93.yml
+на только что созданную виртуальную машину-чтобы это выполнить вводим комманду из файла README.md
+.
 
 
 Теперь можно запустить мастер установки перейдя по пути http://your_ip_or_domain/install.php и следовать инструкциям
