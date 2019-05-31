@@ -8,6 +8,7 @@
 1 step :Create file on_ansible_master.yml on ansible-master in google cloud platform
 and running this file :
 -----
+Need be in dir /home on ansible-master and then :
 ansible-playbook /home/on_ansible_master.yml -i hosts
 ---
 after successful copying go to that folder and execute the rest of the commands
