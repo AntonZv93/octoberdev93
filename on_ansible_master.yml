@@ -1,0 +1,19 @@
+---
+- hosts: all
+  become: yes
+  
+  tasks:
+
+  - name: Install git
+  apt: name=git state=latest
+
+  
+
+  - name: Download octoberdev93
+    git:
+      repo: https:/github.com/antonzv93/octoberdev93.git
+      dest=/home/
+      validate_certs=no
+      version: master
+      become: yes
+      mode: 0755
