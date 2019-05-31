@@ -4,6 +4,9 @@
 После следования этому файлу запустите со своей ansible-master 2 следующие комманды
 ----
 #Create virtual machine, domain and install october:
+1 step :Copy file create.yml on ansible-master in google cloud platform
+and running this file :
+
 ansible-playbook create.yml --extra-vars "domain=domain_name" --user=username --private-key=~/.ssh/ssh_private_key
 ------------
 #Copy git to your gcp instance and running this playbook:
