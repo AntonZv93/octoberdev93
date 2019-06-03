@@ -41,7 +41,7 @@ Cоздаем файл playbook /etc/ansible/gce/on_ansible_master.yml
 С помощью этого скрипта мы копируем гит на хост где находится ansible и оттуда мы можем продолжить перейдя в скопированную папку и выполнив следующую комманду:
 ansible-playbook on_ansible_master.yml -i hosts
 Для запуска следующего сценария выполняем команду:
-ansible-playbook /etc/ansible/gce/octoberdev93/create.yml --extra-vars "domain=yourdns" --user= --private-key=~/.ssh/user
+ansible-playbook /etc/ansible/gce/octoberdev93/create.yml  -e instances="localhost --extra-vars "domain=yourdns"  --user= --private-key=~/.ssh/user
 С помощью этого playbook создаем новую виртуальную машину, правила разрешающие доступ к портам 80,443 и Cloud DNS с A-записью,
  в переменной domain передаем нашему сценарию домен который будет создан.
  и устанавливаем роли lamp для october
@@ -56,7 +56,7 @@ LEMP (Linux, Apache2, MySQL, PHP) уже установили и установ�
   
 Выполняется в файле octoberdev93.yml после клонирования репозитория git:
 
-ansible-playbook /etc/ansible/gce/octoberdev93/octoberdev93.yml --extra-vars "domain=yourdns" --user= --private-key=~/.ssh/user
+ansible-playbook /etc/ansible/gce/octoberdev93/octoberdev93.yml -e instances="localhost" --extra-vars "domain=yourdns" --user= --private-key=~/.ssh/user
 
 
 Теперь можно запустить мастер установки перейдя по пути http://your_ip_or_domain/install.php и следовать инструкциям
