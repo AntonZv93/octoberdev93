@@ -16,7 +16,6 @@
 
 - name: Create mysql user
   mysql_user:
-    host= localhost
     name={{ oct_mysql_user }}
     password={{ oct_mysql_password }}
     priv=*.*:ALL
