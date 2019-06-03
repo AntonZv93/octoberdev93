@@ -21,6 +21,6 @@
     password={{ oct_mysql_password }}
     priv=*.*:ALL
   with_items:
-    - 127.0.0.1
+    - your_ip_in_file_hosts
     - ::1
     - localhost
