@@ -56,7 +56,7 @@ LEMP (Linux, Apache2, MySQL, PHP) уже установили и установ�
   
 Выполняется в файле octoberdev93.yml после клонирования репозитория git:
 
-ansible-playbook /etc/ansible/gce/octoberdev93/octoberdev93.yml -e instances="localhost" --extra-vars "domain=yourdns" --user= --private-key=~/.ssh/user
+ansible-playbook /etc/ansible/gce/octoberdev93/octoberdev93.yml  --extra-vars "domain=yourdns" --user= --private-key=~/.ssh/user
 
 
 Теперь можно запустить мастер установки перейдя по пути http://your_ip_or_domain/install.php и следовать инструкциям
