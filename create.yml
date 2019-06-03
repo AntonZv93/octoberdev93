@@ -10,7 +10,7 @@
   tasks:
     - name: Launch instances
       gce:
-          instance_names: '{{ domain | regex_replace("(\.)","-") }}'
+          instance_names: "{{ instances }}"
           machine_type: "{{ machine_type }}"
           image: "{{ image }}"
           service_account_email: "{{ service_account_email }}"
