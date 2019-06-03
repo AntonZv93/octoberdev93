@@ -22,12 +22,4 @@
       mode: 0755
   
 
-  - name: Deploy Apache2 and other
-    hosts: localhost
-    become: yes
-    become_method: sudo
-    roles:
-      - apache2
-      - php-fpm
-      - mysql
-    
+  
