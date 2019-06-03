@@ -10,7 +10,7 @@ sudo apt-get install ansible
 Вносим изменения в конфигурационный файл /etc/ansible/ansible.cfg:
 Раскомментируем  строку host_key_checking = False . Это необходимо для того, что бы при удалении и повторном создании виртуальной машины игнорировать ошибку изменения ключа.
 также активируем строку nocows = 1, этот параметр необязателен, если вам нравится изображение веселой коровы, то игнорируем его.
-
+Отредактируйте файлы var,hosts,inventory(/roles/mysql/tests/inventory и других roles) и подставьте значения со своей облачной платформы 
 Переходим к созданию проекта. 
 Для чего переходим по адресу - https://console.cloud.google.com/projectselector/compute/instances.
  Я назвал проект octoberdev93, т.к. в будущем именно october будет развернут в виртуальной машине.
@@ -39,13 +39,13 @@ machine_type: f1-micro
 image: debian-8
 Cоздаем файл playbook /etc/ansible/gce/on_ansible_master.yml
 С помощью этого скрипта мы копируем гит на хост где находится ansible и оттуда мы можем продолжить перейдя в скопированную папку и выполнив следующую комманду:
-ansible-playbook /etc/ansible/gce/on_ansible_master.yml -i hosts
+ansible-playbook on_ansible_master.yml -i hosts
 Для запуска следующего сценария выполняем команду:
-ansible-playbook /home/create.yml --extra-vars "domain=yourdns" --user= --private-key=~/.ssh/user
+ansible-playbook /etc/ansible/gce/octoberdev93/create.yml --extra-vars "domain=yourdns" --user= --private-key=~/.ssh/user
 С помощью этого playbook создаем новую виртуальную машину, правила разрешающие доступ к портам 80,443 и Cloud DNS с A-записью,
  в переменной domain передаем нашему сценарию домен который будет создан.
  Ниже привожу сценарий для удаления созданной нами машины - 
-ansible-playbook /home/destroy.yml
+ansible-playbook /etc/ansible/gce/octoberdev93/destroy.yml
 
 
 
@@ -54,9 +54,9 @@ ansible-playbook /home/destroy.yml
  в качестве примера развернем LEMP (Linux, Apache2, MySQL, PHP) и установим October:
 
   
-Я добавил роли (задачи) которые выполнятся в файле octoberdev93.yml после клонирования репозитория git 
-на только что созданную виртуальную машину-чтобы это выполнить вводим комманду из файла README.md
-.
+Я добавил роли (задачи) которые выполнятся в файле octoberdev93.yml после клонирования репозитория git:
+
+ansible-playbook /etc/ansible/gce/octoberdev93/octoberdev93.yml --extra-vars "domain=yourdns" --user= --private-key=~/.ssh/user
 
 
 Теперь можно запустить мастер установки перейдя по пути http://your_ip_or_domain/install.php и следовать инструкциям
