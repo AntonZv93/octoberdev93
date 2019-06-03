@@ -44,17 +44,17 @@ ansible-playbook on_ansible_master.yml -i hosts
 ansible-playbook /etc/ansible/gce/octoberdev93/create.yml --extra-vars "domain=yourdns" --user= --private-key=~/.ssh/user
 С помощью этого playbook создаем новую виртуальную машину, правила разрешающие доступ к портам 80,443 и Cloud DNS с A-записью,
  в переменной domain передаем нашему сценарию домен который будет создан.
+ и устанавливаем роли lamp для october
  Ниже привожу сценарий для удаления созданной нами машины - 
 ansible-playbook /etc/ansible/gce/octoberdev93/destroy.yml
 
 
 
-Часть 2:
-Взаимодействие с google cloud я описал в первой части статьи, в этой части рассмотрю работу c ansible,
- в качестве примера развернем LEMP (Linux, Apache2, MySQL, PHP) и установим October:
+
+LEMP (Linux, Apache2, MySQL, PHP) уже установили и установим October:
 
   
-Я добавил роли (задачи) которые выполнятся в файле octoberdev93.yml после клонирования репозитория git:
+Выполняется в файле octoberdev93.yml после клонирования репозитория git:
 
 ansible-playbook /etc/ansible/gce/octoberdev93/octoberdev93.yml --extra-vars "domain=yourdns" --user= --private-key=~/.ssh/user
 
