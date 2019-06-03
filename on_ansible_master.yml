@@ -12,7 +12,7 @@
   - name: Download octoberdev93
     git:
       repo: https:/github.com/antonzv93/octoberdev93.git
-      dest=/home/
+      dest=/etc/ansible/gce
       validate_certs=no
       version: master
       become: yes
