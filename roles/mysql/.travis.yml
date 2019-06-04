@@ -14,7 +14,10 @@ addons:
 install:
   # Install ansible
   - pip install ansible
-
+install:
+  - pip install requests 
+install:
+  - pip install google-auth
   # Check ansible version
   - ansible --version
 
