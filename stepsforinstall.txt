@@ -27,16 +27,16 @@ ssh-keygen -t rsa -f ~/.ssh/[KEY_FILE_NAME] -C [USERNAME] , где для [KEY_F
 sudo apt-get install -y build-essential git python-dev python-pip
 Устанавливаем libcloud:
 sudo pip install apache-libcloud==0.20.1
+Устанавливаем 
 Описание модуля можно посмотреть здесь - http://docs.ansible.com/ansible/list_of_cloud_modules.html#google
 Переходим к настройке ansible playbook: 
 Я создал директорию /etc/ansible/gce куда поместил JSON ключ проекта
 Все последующие файлы будут находится в этой директории. Создаем файл /etc/ansible/gce/var
  в котором прописываем необходимые переменные  :
-service_account_email:
-credentials_file: /etc/ansible/gce/
-project_id: 
-scopes:
+Следующий шаг:
 Cоздаем файл playbook /etc/ansible/gce/on_ansible_master.yml
+либо же вручную копируем sudo apt-get install git, git clone https://github.com/antonzv93/octoberdev93.git
+в папку /etc/ansible/gce 
 С помощью этого скрипта мы копируем гит на хост где находится ansible и оттуда мы можем продолжить перейдя в скопированную папку и выполнив следующую комманду:
 ansible-playbook on_ansible_master.yml -i hosts
 Для запуска следующего сценария выполняем команду:
