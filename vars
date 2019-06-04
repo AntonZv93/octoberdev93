@@ -1,0 +1,6 @@
+---
+gcp_project: octoberdev93
+gcp_cred_kind: serviceaccount
+gcp_cred_file: /home/my_account.json
+zone: "us-central1-a"
+region: "us-central1"
