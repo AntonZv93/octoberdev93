@@ -1,6 +1,6 @@
 ---
-service_account_email: *-compute@developer.google-serviceaccount.com
-credentials_file: /etc/ansible/gce/*.json
-project_id: your_number
-machine_type: f1-micro
-image: debian-8
+gcp_auth_kind: serviceaccount
+gcp_service_account_email: *-compute@developer.google-serviceaccount.com
+gcp_service_account_file: /etc/ansible/gce/*.json
+gcp_project_id: your_number
+gcp_scopes: https://www.googleapis.com/auth/compute
