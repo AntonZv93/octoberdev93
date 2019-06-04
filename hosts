@@ -1,2 +1,2 @@
-[webservers]
-october ansible_ssh_host=    ansible_ssh_user=root    ansible_ssh_private_key_file=
+[october]
+10.0.0.1 ansible_user=hostname_your   ansible_ssh_private_key_file=/home/hostname_your/.ssh/id_rsa
