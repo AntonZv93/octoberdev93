@@ -45,7 +45,7 @@
    - name: create a instance
      gcp_compute_instance:
          state: present
-         name: localhost
+         name: october
          machine_type: n1-standard-1
          disks:
            - auto_delete: true
@@ -69,12 +69,4 @@
 
     - name: Add host to groupname
       add_host: hostname={{ address.address }} groupname=new_instances
- - name: Manage new instances
-   hosts: localhost
-   remote_user: root
-   become: yes
-   roles:
-     - apache2
-     - mysql
-     - php-fpm
-
+ 
