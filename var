@@ -1,6 +1,6 @@
 ---
-gcp_auth_kind: serviceaccount
-gcp_service_account_email: *-compute@developer.google-serviceaccount.com
-gcp_service_account_file: /etc/ansible/gce/*.json
-gcp_project_id: your_number
-gcp_scopes: https://www.googleapis.com/auth/compute
+auth_kind: serviceaccount
+service_account_email: *-compute@developer.google-serviceaccount.com
+service_account_file: /etc/ansible/gce/*.json
+project_id: your_number
+scopes: https://www.googleapis.com/auth/compute
