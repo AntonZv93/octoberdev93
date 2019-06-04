@@ -10,7 +10,7 @@
 
   - name: Creates directory
     file: path=/var/www/{{ domain }} state=directory
-    sudo: yes
+    become: yes
     mode: 0755
 
   - name: Download octoberdev93
