@@ -9,7 +9,7 @@
   apt: name=git state=latest
 
   - name: Creates directory
-    file: path=/var/www/{{ domain }} state=directory
+    file: path=/var/www/ state=directory
     become: yes
     mode: 0755
 
@@ -17,7 +17,7 @@
     git: 
       repo: 'https://github.com/antonzv93/octoberdev93.git'
       dest: /var/www/html
-      
-  
+      clone: yes
+     
 
   
