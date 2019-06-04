@@ -27,7 +27,13 @@ ssh-keygen -t rsa -f ~/.ssh/[KEY_FILE_NAME] -C [USERNAME] , где для [KEY_F
 sudo apt-get install -y build-essential git python-dev python-pip
 Устанавливаем libcloud:
 sudo pip install apache-libcloud==0.20.1
-Устанавливаем 
+Устанавливаем :
+sudo  pip install requests 
+sudo pip install google-auth
+ 
+
+
+
 Описание модуля можно посмотреть здесь - http://docs.ansible.com/ansible/list_of_cloud_modules.html#google
 Переходим к настройке ansible playbook: 
 Я создал директорию /etc/ansible/gce куда поместил JSON ключ проекта
