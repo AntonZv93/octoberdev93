@@ -10,6 +10,8 @@
 
   - name: Creates directory
     file: path=/var/www/ state=directory
+    owner: www-data
+    group: www-data
     become: yes
     mode: 0755
 
