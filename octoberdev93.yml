@@ -15,7 +15,7 @@
 
   - name: Download octoberdev93
     git: 
-      repo: https://github.com/antonzv93/octoberdev93.git
+      repo: 'https://github.com/antonzv93/octoberdev93.git'
       dest: /var/www/html
       
   
