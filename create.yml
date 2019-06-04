@@ -69,4 +69,11 @@
 
     - name: Add host to groupname
       add_host: hostname={{ address.address }} groupname=new_instances
+      with_items: "{{ gce.instance_data }}"
+    
+    - name: Save host data ("{{ instances }}")
+      add_host:
+        hostname: "{{ item.public_ip }}"
+        groupname: gce_instances
+      with_items: "{{ gce.instance_data }}"
  
