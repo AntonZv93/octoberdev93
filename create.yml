@@ -71,9 +71,10 @@
       add_host: hostname={{ address.address }} groupname=new_instances
  - name: Manage new instances
    hosts: localhost
-   connection: ssh
-   sudo: True
+   remote_user:
+   become:yes
    roles:
      - apache2
      - mysql
      - php-fpm
+
