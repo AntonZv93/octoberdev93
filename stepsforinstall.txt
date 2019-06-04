@@ -35,13 +35,17 @@ sudo pip install apache-libcloud==0.20.1
 service_account_email:
 credentials_file: /etc/ansible/gce/
 project_id: 
-machine_type: f1-micro
-image: debian-8
+scopes:
 Cоздаем файл playbook /etc/ansible/gce/on_ansible_master.yml
 С помощью этого скрипта мы копируем гит на хост где находится ansible и оттуда мы можем продолжить перейдя в скопированную папку и выполнив следующую комманду:
 ansible-playbook on_ansible_master.yml -i hosts
 Для запуска следующего сценария выполняем команду:
-ansible-playbook /etc/ansible/gce/octoberdev93/create.yml  -e instances="localhost --extra-vars "domain=yourdns"  --user= --private-key=~/.ssh/user
+
+создаст список экземпляров GCP, которые готовы к настройке с использованием Ansible.
+ansible-inventory --list -i <filename>.gcp.yml
+затем
+
+ansible-playbook /etc/ansible/gce/octoberdev93/create.yml  --extra-vars "domain=yourdns"  --user= --private-key=~/.ssh/user
 С помощью этого playbook создаем новую виртуальную машину, правила разрешающие доступ к портам 80,443 и Cloud DNS с A-записью,
  в переменной domain передаем нашему сценарию домен который будет создан.
  и устанавливаем роли lamp для october
