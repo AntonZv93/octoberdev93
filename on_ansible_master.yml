@@ -1,5 +1,6 @@
 ---
 - hosts: october
+  connection: ssh
   become: yes
   tasks:
     - name: install lamp stack
