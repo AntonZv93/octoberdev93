@@ -39,78 +39,14 @@ sudo pip install google-auth
 Я создал директорию /etc/ansible/gce куда поместил JSON ключ проекта
 Все последующие файлы будут находится в этой директории. Создаем файл /etc/ansible/gce/var
  в котором прописываем необходимые переменные  :
-Следующий шаг:
-Cоздаем файл playbook /etc/ansible/gce/on_ansible_master.yml
-либо же вручную копируем sudo apt-get install git, git clone https://github.com/antonzv93/octoberdev93.git
-в папку /etc/ansible/gce 
-С помощью этого скрипта мы копируем гит на хост где находится ansible и оттуда мы можем продолжить перейдя в скопированную папку и выполнив следующую комманду:
+Следующие шаги:
+создание инстанса для october
+ansible-playbook create.yml -i hosts
+установка : apache2,mysql,php а также копирует все с нашего репозитория в папку /var/www/html
 ansible-playbook on_ansible_master.yml -i hosts
-Для запуска следующего сценария выполняем команду:
-
-создаст список экземпляров GCP, которые готовы к настройке с использованием Ansible.
-ansible-inventory --list -i <filename>.gcp.yml
-затем
-
-ansible-playbook /etc/ansible/gce/octoberdev93/create.yml  --extra-vars "domain=yourdns"  --user= --private-key=~/.ssh/user
-С помощью этого playbook создаем новую виртуальную машину, правила разрешающие доступ к портам 80,443 и Cloud DNS с A-записью,
- в переменной domain передаем нашему сценарию домен который будет создан.
- и устанавливаем роли lamp для october
- Ниже привожу сценарий для удаления созданной нами машины - 
-ansible-playbook /etc/ansible/gce/octoberdev93/destroy.yml
+После успешного копирования открываем браузер : http://ip_your_october/install.php
 
 
 
-
-LEMP (Linux, Apache2, MySQL, PHP) уже установили и установим October:
-
-  
-Выполняется в файле octoberdev93.yml после клонирования репозитория git:
-
-ansible-playbook /etc/ansible/gce/octoberdev93/octoberdev93.yml  --extra-vars "domain=yourdns" --user= --private-key=~/.ssh/user
-
-
-Теперь можно запустить мастер установки перейдя по пути http://your_ip_or_domain/install.php и следовать инструкциям
-
-2 Тип установки :
-
-Ansible опирается на python, поэтому мы сначала установим зависимости:
-# apt update && apt install python python-setuptools -y
-# easy_install pip
-# pip install ansible
-Заполните конфигурацию Invetory:
-Ваш файл Invetory будет содержать ваш хост и переменную информацию. Допустим, у нас есть 3 узла, на которые мы хотим развернуть программное обеспечение; node-1, node-2И node-3. Мы сгруппируем их под nodes. Это будет сохранено в новом файле inventory.init:
-[nodes]
-node-1
-node-2
-node-3
-Далее мы заполним информацию о наших именах узлов, это будет сделано в нашей ~/.ssh/configконфигурации:
-Host node-1
-  Hostname 10.0.0.2
-  User root
-  IdentityFile ~/.ssh/id_rsa
-  StrictHostKeyChecking no
-  UserKnownHostsFile /dev/null
-
-Host node-2
-  Hostname 10.0.0.3
-  User root
-  IdentityFile ~/.ssh/id_rsa
-  StrictHostKeyChecking no
-  UserKnownHostsFile /dev/null
-
-Host node-3
-  Hostname 10.0.0.4
-  User root
-  IdentityFile ~/.ssh/id_rsa
-  StrictHostKeyChecking no
-  UserKnownHostsFile /dev/null
-  Теперь нам нужно сгенерировать ключ ssh для нашего узла, из которого мы будем запускать наши команды ansible:
-  # ssh-keygen -b 2048 -f ~/.ssh/id_rsa -t rsa -q -N ""
-  Теперь мы скопируем содержимое ~/.ssh/id_rsa.pubв наши целевые узлы ~/.ssh/authorized_keysили, если у вас включена аутентификация по паролю, мы можем это сделать $ ssh-copy-id root@10.0.0.xи т. Д. Теперь мы сможем подключиться к нашим узлам по ssh node-1, node-2и node-3. 
-  Поскольку Ansible требует Python, нам нужно загрузить наши узлы с помощью Python. Поскольку мы можем использовать ssh для наших узлов, мы будем использовать ansible для развертывания Python на наших узлах:
-  # ansible -m raw -s -a "apt update && apt install python -y" -i inventory.ini nodes
-Это должно произойти, тогда мы можем проверить наше соединение, запустив модуль ping:
- Потом следуем всем шагам которые описанны выше (настройка в google cloud)
-  
 
 
