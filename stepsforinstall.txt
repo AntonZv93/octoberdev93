@@ -40,6 +40,7 @@ sudo pip install google-auth
 Все последующие файлы будут находится в этой директории. Создаем файл /etc/ansible/gce/var
  в котором прописываем необходимые переменные  :
 Следующие шаги:
+ansible-inventory --list -i <filename>.gce.yml
 создание инстанса для october
 ansible-playbook create.yml -i hosts
 установка : apache2,mysql,php а также копирует все с нашего репозитория в папку /var/www/html
