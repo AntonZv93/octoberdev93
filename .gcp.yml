@@ -2,4 +2,4 @@ plugin: gcp_compute
 projects:
   - octoberdev93
 auth_kind: serviceaccount
-service_account_file: /home/hostname/*.json
+service_account_file: /home/my_account.json
