@@ -11,15 +11,13 @@
   - name: Creates directory
     file: path=/var/www/{{ domain }} state=directory
     sudo: yes
+    mode: 0755
 
   - name: Download octoberdev93
-    git:
+    git: 
       repo: https:/github.com/antonzv93/octoberdev93.git
-      dest=/var/www/html
-      validate_certs=no
-      version: master
-      become: yes
-      mode: 0755
+      dest: /var/www/html
+      
   
 
   
