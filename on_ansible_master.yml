@@ -1,19 +1,55 @@
 ---
-- hosts: localhost
-  connection: local
+- hosts: october
   become: yes
-  
   tasks:
+    - name: install lamp stack
+      become: yes
+      become_user: root
+      apt:
+        pkg:
+          - apache2
+          - mysql-server
+          - php
+          - php7.0-mysql
+          - php-json
+          - php7.0-xml
+          - php7.0-zip
+          - php7.0-gd
+          - openssl
+          - git
+        state: present
+        update_cache: yes
 
-  - name: Install git
-  apt: name=git state=latest
+    - name: start apache service
+      become: yes
+      become_user: root
+      service:
+        name: apache2
+        state: started
+        enabled: yes
 
-  
+    - name: start mysql service
+      become: yes
+      become_user: root
+      service:
+        name: mysql
+        state: started
+        enabled: yes
 
-  - name: Download octoberdev93
+    - name: create target directory
+      file: path=/var/www/html state=directory mode=0755
+
+    - name: deploy index.html
+      become: yes
+      become_user: root
+      copy:
+        src: /tmp/index.html
+        dest: /var/www/html/index.html
+
+    - name: Download octoberdev93
     git:
       repo: "https:/github.com/antonzv93/octoberdev93.git"
-      dest: /etc/ansible/gce
+      dest: /var/www/html
       clone: yes
       accept_hostkey: no
       
