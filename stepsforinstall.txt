@@ -74,9 +74,9 @@ ansible-playbook /etc/ansible/gce/octoberdev93/octoberdev93.yml  --extra-vars "d
 2 Тип установки :
 
 Ansible опирается на python, поэтому мы сначала установим зависимости:
-$ apt update && apt install python python-setuptools -y
-$ easy_install pip
-$ pip install ansible
+# apt update && apt install python python-setuptools -y
+# easy_install pip
+# pip install ansible
 Заполните конфигурацию Invetory:
 Ваш файл Invetory будет содержать ваш хост и переменную информацию. Допустим, у нас есть 3 узла, на которые мы хотим развернуть программное обеспечение; node-1, node-2И node-3. Мы сгруппируем их под nodes. Это будет сохранено в новом файле inventory.init:
 [nodes]
@@ -105,10 +105,10 @@ Host node-3
   StrictHostKeyChecking no
   UserKnownHostsFile /dev/null
   Теперь нам нужно сгенерировать ключ ssh для нашего узла, из которого мы будем запускать наши команды ansible:
-  ssh-keygen -b 2048 -f ~/.ssh/id_rsa -t rsa -q -N ""
+  # ssh-keygen -b 2048 -f ~/.ssh/id_rsa -t rsa -q -N ""
   Теперь мы скопируем содержимое ~/.ssh/id_rsa.pubв наши целевые узлы ~/.ssh/authorized_keysили, если у вас включена аутентификация по паролю, мы можем это сделать $ ssh-copy-id root@10.0.0.xи т. Д. Теперь мы сможем подключиться к нашим узлам по ssh node-1, node-2и node-3. 
   Поскольку Ansible требует Python, нам нужно загрузить наши узлы с помощью Python. Поскольку мы можем использовать ssh для наших узлов, мы будем использовать ansible для развертывания Python на наших узлах:
-  $ ansible -m raw -s -a "apt update && apt install python -y" -i inventory.ini nodes
+  # ansible -m raw -s -a "apt update && apt install python -y" -i inventory.ini nodes
 Это должно произойти, тогда мы можем проверить наше соединение, запустив модуль ping:
  Потом следуем всем шагам которые описанны выше (настройка в google cloud)
   
