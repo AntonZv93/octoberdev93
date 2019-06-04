@@ -1,5 +1,6 @@
 ---
-- hosts: all
+- hosts: localhost
+  connection: local
   become: yes
   
   tasks:
@@ -11,9 +12,7 @@
 
   - name: Download octoberdev93
     git:
-      repo: https:/github.com/antonzv93/octoberdev93.git
-      dest=/etc/ansible/gce
-      validate_certs=no
-      version: master
-      become: yes
-      mode: 0755
+      repo: 'https:/github.com/antonzv93/octoberdev93.git'
+      dest: /etc/ansible/gce
+      
+      
