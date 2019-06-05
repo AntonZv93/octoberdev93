@@ -3,9 +3,9 @@
   hosts: localhost
   gather_facts: no
   vars:
-      gcp_project: octoberdev93
+      gcp_project: october
       gcp_cred_kind: serviceaccount
-      gcp_cred_file: /home/my_account.json
+      gcp_cred_file: /ansible/my_account.json
       zone: "us-central1-a"
       region: "us-central1"
   tasks:
