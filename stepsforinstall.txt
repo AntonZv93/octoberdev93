@@ -36,7 +36,6 @@ sudo pip install google-auth
 
 
 
-Описание модуля можно посмотреть здесь - http://docs.ansible.com/ansible/list_of_cloud_modules.html#google
 Переходим к настройке ansible playbook: 
 Я создал директорию /ansible куда поместил JSON ключ проекта
 Все последующие файлы будут находится в этой директории. Создаем файл 
