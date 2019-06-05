@@ -7,13 +7,13 @@ apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
 и устанавливаем: 
 sudo apt-get update 
 sudo apt-get install ansible
-Вносим изменения в конфигурационный файл /etc/ansible/ansible.cfg:
+Вносим изменения в конфигурационный файл /ansible/ansible.cfg такой как у нас в репозитории:
 Раскомментируем  строку host_key_checking = False . Это необходимо для того, что бы при удалении и повторном создании виртуальной машины игнорировать ошибку изменения ключа.
 также активируем строку nocows = 1, этот параметр необязателен, если вам нравится изображение веселой коровы, то игнорируем его.
-Отредактируйте файлы var,hosts,inventory(/roles/mysql/tests/inventory и других roles) и подставьте значения со своей облачной платформы 
+
 Переходим к созданию проекта. 
 Для чего переходим по адресу - https://console.cloud.google.com/projectselector/compute/instances.
- Я назвал проект octoberdev93, т.к. в будущем именно october будет развернут в виртуальной машине.
+ Я назвал проект october, т.к. в будущем именно october будет развернут в виртуальной машине.
 После создания, нам понадобится идентификатор проекта
 Переходим по ссылке htps://console.cloud.google.com/iam-admin/serviceaccounts/ 
 --- выбираем аккаунт, либо создаем новый для нашего проекта и сохраняем ключ (тип JSON) 
@@ -36,15 +36,16 @@ sudo pip install google-auth
 
 Описание модуля можно посмотреть здесь - http://docs.ansible.com/ansible/list_of_cloud_modules.html#google
 Переходим к настройке ansible playbook: 
-Я создал директорию /etc/ansible/gce куда поместил JSON ключ проекта
-Все последующие файлы будут находится в этой директории. Создаем файл /etc/ansible/gce/var
- в котором прописываем необходимые переменные  :
+Я создал директорию /ansible куда поместил JSON ключ проекта
+Все последующие файлы будут находится в этой директории. Создаем файл 
+ в котором прописываем необходимые переменные 
 Следующие шаги:
-ansible-inventory --list -i <filename>.gce.yml
+git clone https://github.com/antonzv93/octoberdev93.git
+Отредактируйте vars внутри файла create.yml
 создание инстанса для october
-ansible-playbook create.yml -i hosts
+ansible-playbook /ansible/octoberdev93 create.yml -i hosts
 установка : apache2,mysql,php а также копирует все с нашего репозитория в папку /var/www/html
-ansible-playbook on_ansible_master.yml -i hosts
+ansible-playbook /ansible/octoberdev93 on_ansible_master.yml -i hosts
 После успешного копирования открываем браузер : http://ip_your_october/install.php
 
 
