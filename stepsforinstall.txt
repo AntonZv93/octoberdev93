@@ -10,8 +10,7 @@ apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
 sudo apt-get update 
 sudo apt-get install ansible
 Вносим изменения в конфигурационный файл /ansible/ansible.cfg такой как у нас в репозитории:
-Раскомментируем  строку host_key_checking = False . Это необходимо для того, что бы при удалении и повторном создании виртуальной машины игнорировать ошибку изменения ключа.
-также активируем строку nocows = 1, этот параметр необязателен, если вам нравится изображение веселой коровы, то игнорируем его.
+ host_key_checking = False . Это необходимо для того, что бы при удалении и повторном создании виртуальной машины игнорировать ошибку изменения ключа.
 
 Переходим к созданию проекта. 
 Для чего переходим по адресу - https://console.cloud.google.com/projectselector/compute/instances.
@@ -23,7 +22,7 @@ sudo apt-get install ansible
 ssh-keygen -t rsa -f ~/.ssh/[KEY_FILE_NAME] -C [USERNAME] , где для [KEY_FILE_NAME] и [USERNAME] указываем свои значения.
 После чего загружаем наш новый публичный ключ по адресу https://console.cloud.google.com/compute/metadata/sshKeys
 Должны быть прописанны настройки инвентори (hosts) :hosts.txt ,а также ansible.cfg где лежит путь до файла инвентори и путь до .ssh директории
-На этом этапе завершаем работу с Google Cloud и переходим к Ansible
+На ansible instance :
 
 Устанавливаем необходимые зависимости:
 sudo apt-get install -y build-essential git python-dev python-pip
@@ -34,8 +33,6 @@ sudo  pip install requests
 sudo pip install google-auth
  
 
-
-
 Переходим к настройке ansible playbook: 
 Я создал директорию /ansible куда поместил JSON ключ проекта
 Все последующие файлы будут находится в этой директории. Создаем файл 
@@ -45,7 +42,7 @@ sudo pip install google-auth
 2)git clone https://github.com/antonzv93/octoberdev93.git
 3)Отредактируйте vars внутри файла create.yml и подставьте значения со своего аккаунта подробнее об этих переменных можно прочесть на сайте:
 https://docs.ansible.com/ansible/latest/modules/gcp_compute_instance_module.html#gcp-compute-instance-module
-4)создание инстанса для october
+4)создание october на новых instances:
 ansible-playbook /ansible/octoberdev93 create.yml -i hosts
 5)установка : apache2,mysql,php а также копирует все с нашего репозитория в папку /var/www/html
 ansible-playbook /ansible/octoberdev93 on_ansible_master.yml -i hosts
