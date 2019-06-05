@@ -53,4 +53,15 @@
       dest: /var/www/html
       clone: yes
       accept_hostkey: no
-      
+    
+     - name: Move octoberdev93 directory to html
+       become: yes
+       copy:
+         remote_src: yes
+         src: /var/www/html/octoberdev93
+         dest: /var/www/html
+     
+     - name: Remove old files foo
+       file:
+         path: /var/www/html/octoberdev93
+         state: absent
