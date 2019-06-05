@@ -1,3 +1,5 @@
+В вашем аккаунте google cloud platform создаете инстанс выбираете ubuntu 16.04-lts
+
 Устанавливаем Ansible, если версия ниже 2.2 обновляем:
 
 добавляем в /etc/apt/sources.list репозиторий 
@@ -40,11 +42,13 @@ sudo pip install google-auth
 Все последующие файлы будут находится в этой директории. Создаем файл 
  в котором прописываем необходимые переменные 
 Следующие шаги:
-git clone https://github.com/antonzv93/octoberdev93.git
-Отредактируйте vars внутри файла create.yml
-создание инстанса для october
+1)apt-get update && apt-get install git
+2)git clone https://github.com/antonzv93/octoberdev93.git
+3)Отредактируйте vars внутри файла create.yml и подставьте значения со своего аккаунта подробнее об этих переменных можно прочесть на сайте:
+https://docs.ansible.com/ansible/latest/modules/gcp_compute_instance_module.html#gcp-compute-instance-module
+4)создание инстанса для october
 ansible-playbook /ansible/octoberdev93 create.yml -i hosts
-установка : apache2,mysql,php а также копирует все с нашего репозитория в папку /var/www/html
+5)установка : apache2,mysql,php а также копирует все с нашего репозитория в папку /var/www/html
 ansible-playbook /ansible/octoberdev93 on_ansible_master.yml -i hosts
 После успешного копирования открываем браузер : http://ip_your_october/install.php
 
