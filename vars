@@ -1,8 +1,0 @@
----
-gcp_project: octoberdev93
-gcp_cred_kind: serviceaccount
-gcp_cred_file: /home/my_account.json
-gcp_auth_kind: 
-gcp_service_account_email: 
-gcp_service_account_file: 
-gcp_scopes: 
