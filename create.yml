@@ -22,7 +22,7 @@
            - https://www.googleapis.com/auth/compute
          state: present
      register: disk
-   -  name: create a network
+   - name: create a network
      gcp_compute_network:
          name: 'network-instance'
          project: "{{ gcp_project }}"
@@ -65,9 +65,9 @@
          scopes:
            - https://www.googleapis.com/auth/compute
      register: instance
-    - name: Wait for SSH to come up
-      wait_for: host={{ address.address }} port=22 delay=10 timeout=60
+   - name: Wait for SSH to come up
+     wait_for: host={{ address.address }} port=22 delay=10 timeout=60
 
-    - name: Add host to groupname
-      add_host: hostname={{ address.address }} groupname=october
+   - name: Add host to groupname
+     add_host: hostname={{ address.address }} groupname=october
       
