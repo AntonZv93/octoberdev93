@@ -21,8 +21,8 @@ sudo apt-get install ansible
 Последнее что нам необходимо - это сгенерировать SSH ключ:
 ssh-keygen -t rsa -f ~/.ssh/[KEY_FILE_NAME] -C [USERNAME] , где для [KEY_FILE_NAME] и [USERNAME] указываем свои значения.
 После чего загружаем наш новый публичный ключ по адресу https://console.cloud.google.com/compute/metadata/sshKeys
-Должны быть прописанны настройки инвентори (hosts) :hosts.txt ,а также ansible.cfg где лежит путь до файла инвентори и путь до .ssh директории
-На ansible instance :
+Должны быть прописанны настройки инвентори (hosts) :hosts.txt ,а также ansible.cfg где лежит путь до файла инвентори и путь до ключей для ssh подключений 
+На ansible выполняем следующие ккомманы :
 
 Устанавливаем необходимые зависимости:
 sudo apt-get install -y build-essential git python-dev python-pip
