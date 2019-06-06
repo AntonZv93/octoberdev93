@@ -59,8 +59,10 @@ https://docs.ansible.com/ansible/latest/modules/gcp_compute_instance_module.html
 создание october на новых instances:
 ansible-playbook /ansible/octoberdev93 -i hosts create.yml 
 после чего переходим в файл hosts и пишем ip нового инстанса и даем имя хосту october
+[ansible]
+ip_your_ansible      ansible_user=                    ansible_ssh_private_key_file=
 [october]
-ip_address ansible_ssh_user= ansible_
+ip_your_new_instance ansible_ssh_user=hostname_your   ansible_ssh_private_key_file=/home/hostname_your/.ssh/id_rsa
 установка : apache2,mysql,php а также копирует все с нашего репозитория в папку /var/www/html
 ansible-playbook /ansible/octoberdev93 on_ansible_master.yml -i hosts
 После успешного копирования открываем браузер : http://ip_your_october/install.php
