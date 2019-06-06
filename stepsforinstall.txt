@@ -2,28 +2,34 @@
 
 Устанавливаем Ansible, если версия ниже 2.2 обновляем:
 
-добавляем в /etc/apt/sources.list репозиторий 
-deb http://ppa.launchpad.net/ansible/ansible/ubuntu xenial main
-Добавляем ключ:
-apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
-и устанавливаем: 
 sudo apt-get update 
 sudo apt-get install ansible
 Вносим изменения в конфигурационный файл /ansible/ansible.cfg такой как у нас в репозитории:
  host_key_checking = False . Это необходимо для того, что бы при удалении и повторном создании виртуальной машины игнорировать ошибку изменения ключа.
 
 Переходим к созданию проекта. 
+
+1)
 Для чего переходим по адресу - https://console.cloud.google.com/projectselector/compute/instances.
  Я назвал проект october, т.к. в будущем именно october будет развернут в виртуальной машине.
 После создания, нам понадобится идентификатор проекта
 Переходим по ссылке https://console.cloud.google.com/iam-admin/serviceaccounts/ 
 --- выбираем аккаунт, либо создаем новый для нашего проекта и сохраняем ключ (тип JSON) 
 
+
+
+
+2)
 Последнее что нам необходимо - это сгенерировать SSH ключ:
 ssh-keygen -t rsa -f ~/.ssh/[KEY_FILE_NAME] -C [USERNAME] , где для [KEY_FILE_NAME] и [USERNAME] указываем свои значения.
 После чего загружаем наш новый публичный ключ по адресу https://console.cloud.google.com/compute/metadata/sshKeys
+
+3)
 Должны быть прописанны настройки к данному ключу в файле инвентори (hosts) 
-На ansible выполняем следующие комманды :
+
+
+
+4)На ansible выполняем следующие комманды :
 
 Устанавливаем необходимые зависимости:
 sudo apt-get install -y build-essential git python-dev python-pip
@@ -33,24 +39,29 @@ sudo pip install apache-libcloud==0.20.1
 sudo  pip install requests 
 sudo pip install google-auth
  
-
+5)
 Переходим к настройке ansible playbook: 
-Я создал директорию /ansible куда поместил JSON ключ проекта
-Все последующие файлы будут находится в этой директории. Создаем файл 
- в котором прописываем необходимые переменные 
+Необходимо создать директорию:
+ $mkdir /ansible 
+куда поместил JSON ключ проекта
+Все последующие файлы будут находится в этой директории.
+6)
 Следующие шаги:
-1)apt-get update && apt-get install git
-2)git clone https://github.com/antonzv93/octoberdev93.git
+apt-get update && apt-get install git
+git clone https://github.com/antonzv93/octoberdev93.git
 а также необходимо отредактировать файл .gcp.yml
 и в нем указать october-иия проэкта и путь к json файлу который вы скачали
 обьяснение находится https://support.google.com/cloud/answer/6158849?hl=en&ref_topic=6262490#serviceaccounts
 и после запустить такую комманду:
  ansible-inventory --list -i <filename>.gcp.yml
-3)Отредактируйте vars внутри файла create.yml и подставьте значения со своего аккаунта подробнее об этих переменных можно прочесть на сайте:
+Отредактируйте vars внутри файла create.yml и подставьте значения со своего аккаунта подробнее об этих переменных можно прочесть на сайте:
 https://docs.ansible.com/ansible/latest/modules/gcp_compute_instance_module.html#gcp-compute-instance-module
-4)создание october на новых instances:
-ansible-playbook /ansible/octoberdev93 create.yml -i hosts
-5)установка : apache2,mysql,php а также копирует все с нашего репозитория в папку /var/www/html
+создание october на новых instances:
+ansible-playbook /ansible/octoberdev93 -i hosts create.yml 
+после чего переходим в файл hosts и пишем ip нового инстанса и даем имя хосту october
+[october]
+ip_address ansible_ssh_user= ansible_
+установка : apache2,mysql,php а также копирует все с нашего репозитория в папку /var/www/html
 ansible-playbook /ansible/octoberdev93 on_ansible_master.yml -i hosts
 После успешного копирования открываем браузер : http://ip_your_october/install.php
 
