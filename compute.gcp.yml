@@ -1,6 +1,6 @@
 plugin: gcp_compute
 projects:
-  - october
+  - <gcp_project_id>
 regions:
   - <gcp_project_region>
 hostnames:                # A list of options that describe the ordering for which hostnames should be assigned. Currently supported hostnames are 'public_ip', 'private_ip', or 'name'.
