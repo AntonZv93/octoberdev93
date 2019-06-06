@@ -41,6 +41,11 @@ sudo pip install google-auth
 Следующие шаги:
 1)apt-get update && apt-get install git
 2)git clone https://github.com/antonzv93/octoberdev93.git
+а также необходимо отредактировать файл .gcp.yml
+и в нем указать october-иия проэкта и путь к json файлу который вы скачали
+обьяснение находится https://support.google.com/cloud/answer/6158849?hl=en&ref_topic=6262490#serviceaccounts
+и после запустить такую комманду:
+ ansible-inventory --list -i <filename>.gcp.yml
 3)Отредактируйте vars внутри файла create.yml и подставьте значения со своего аккаунта подробнее об этих переменных можно прочесть на сайте:
 https://docs.ansible.com/ansible/latest/modules/gcp_compute_instance_module.html#gcp-compute-instance-module
 4)создание october на новых instances:
