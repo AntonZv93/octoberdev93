@@ -1,5 +1,0 @@
-plugin: gcp_compute
-projects:
-  - october
-auth_kind: serviceaccount
-service_account_file: /you_path/your_file_name.json

@@ -1,0 +1,10 @@
+plugin: gcp_compute
+projects:
+  - october
+regions:
+  - <gcp_project_region>
+hostnames:                # A list of options that describe the ordering for which hostnames should be assigned. Currently supported hostnames are 'public_ip', 'private_ip', or 'name'.
+  - localhost
+filters: []
+auth_kind: serviceaccount
+service_account_file: /you_path/your_file_name.json
